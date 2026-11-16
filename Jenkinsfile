@@ -25,7 +25,7 @@ pipeline{
         stage('3. Docker build'){
             steps{
                 sh '''
-                    docker compose build web
+                    docker-compose build web
                 '''
             }
         }
