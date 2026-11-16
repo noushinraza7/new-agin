@@ -30,17 +30,25 @@ pipeline{
             }
         }
         stage('4. Deploy Application') {
-    steps {
-        sh '''
-            docker stop my-php-container || true
-            docker rm my-php-container || true
+            steps {
+                sh '''
+                    docker stop my-php-container || true
+                    docker rm my-php-container || true
 
-            docker run -d \
-                --name my-php-container \
-                -p 8082:80 \
-                my-php-app
-        '''
-    }
-}
+                    docker run -d \
+                        --name my-php-container \
+                        -p 8082:80 \
+                        my-php-app
+                '''
+            }
+        }
+        stage('5. Verify Deployment') {
+            steps {
+                sh '''
+                    docker ps
+                    curl -f http://localhost:8082
+                '''
+            }
+        }
     }
 }
