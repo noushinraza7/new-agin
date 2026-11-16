@@ -29,13 +29,18 @@ pipeline{
                 '''
             }
         }
-        stage('4. Deploy Application'){
-            steps{
-                sh '''
-                    docker compose up -d
-                '''
-            }
-        }
-        
+        stage('4. Deploy Application') {
+    steps {
+        sh '''
+            docker stop my-php-container || true
+            docker rm my-php-container || true
+
+            docker run -d \
+                --name my-php-container \
+                -p 8082:80 \
+                my-php-app
+        '''
+    }
+}
     }
 }
