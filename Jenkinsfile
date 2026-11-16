@@ -1,40 +1,41 @@
 pipeline{
     agent any
 
-    environment{
+    environment {
         IMAGE_NAME = "php-login-app"
-        CONTAINER_NAME =  "php-login-app"
-
+        CONTAINER_NAME = "php-login-app"
     }
     stages{
-        stage('1- git checkout'){
+        stage('1. Git Checkout'){
             steps{
                 script{
-                    echo 'downloading php source code'
+                    echo 'Downloading PHP source code'
                     checkout scm
-                }
-            }
-        stage('2- php syntax test'){
-            steps{
-                sh '''
-                    docker run --rm -v "$WORKSPACE":/app -w /app php:8.4-cli sh -c 'find . -name  "*.php" -not -path "./vendor/* -print0 | xargs -0 -r -n1 php -1' 
-                '''
+            
                 }
             }
         }
-        stage('3- docker build'){
+        stage('2. PHP Syntax Test'){
             steps{
-                sh'''
+                sh '''
+                    docker run --rm -v "$WORKSPACE":/app -w /app php:8.4-cli sh -c 'find . -name "*.php" -not -path "./vendor/* -print0 | xargs -0 -r -n1 php -1"
+                '''
+            }
+        }
+        stage('3. Docker build'){
+            steps{
+                sh '''
                     docker compose build web
                 '''
             }
         }
-        stage('4- deploy application'){
+        stgage('4. Deploy Application'){
             steps{
-                sh'''
+                sh '''
                     docker compose up -d
                 '''
             }
         }
+        
     }
 }
