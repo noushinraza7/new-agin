@@ -25,14 +25,14 @@ pipeline{
         stage('3. Docker build'){
             steps{
                 sh '''
-                    docker-compose build web
+                    docker build -t my-php-app .
                 '''
             }
         }
         stage('4. Deploy Application'){
             steps{
                 sh '''
-                    docker build -t my-php-app .
+                    docker compose up -d
                 '''
             }
         }
