@@ -32,7 +32,7 @@ pipeline{
         stage('4. Deploy Application'){
             steps{
                 sh '''
-                    docker compose up -d
+                    docker build -t my-php-app .
                 '''
             }
         }
